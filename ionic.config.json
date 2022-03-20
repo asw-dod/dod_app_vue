@@ -1,0 +1,7 @@
+{
+  "name": "dod_app",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue"
+}
