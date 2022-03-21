@@ -2,13 +2,16 @@
   font-family: jua;
   src: url("../assets/fonts/Jua-Regular.ttf");
 }
+body{ -ms-overflow-style: none; } ::-webkit-scrollbar { display: none; }
+
+
 .row1 {
   height: 100%;
   overflow: scroll;
 }
 
 .table {
-  width: 94vw;
+  width: 95vw;
   height: 300px;
 }
 

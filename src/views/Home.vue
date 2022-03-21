@@ -12,10 +12,10 @@
           <ion-col>
             <h1 class="note_title">학사공지</h1>
             <!--for 문으로 리스트 데이터를 가지고 온다.-->
-            <ion-card class="table">
-              <ion-card-header>
-                <ion-card-title>Card Title</ion-card-title>
-                <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
+            <ion-card class="table" :style="{ overflow: 'scroll' }">
+              <ion-card-header v-for="item in Bachelor" :key="item">
+                <ion-card-title>{{ item.title }}</ion-card-title>
+                <ion-card-subtitle>{{ item.date }}</ion-card-subtitle>
               </ion-card-header>
             </ion-card>
           </ion-col>
@@ -24,10 +24,10 @@
             <h1 class="note_title">장학공지</h1>
             <!--listview-->
             <!--for 문으로 리스트 데이터를 가지고 온다.-->
-            <ion-card class="table">
-              <ion-card-header>
-                <ion-card-title>Card Title</ion-card-title>
-                <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
+            <ion-card class="table" :style="{ overflow: 'scroll' }">
+              <ion-card-header v-for="item in scholarship" :key="item">
+                <ion-card-title>{{ item.title }}</ion-card-title>
+                <ion-card-subtitle>{{ item.date }}</ion-card-subtitle>
               </ion-card-header>
             </ion-card>
           </ion-col>
@@ -36,10 +36,10 @@
             <h1 class="note_title">기숙사공지</h1>
             <!--listview-->
             <!--for 문으로 리스트 데이터를 가지고 온다.-->
-            <ion-card class="table">
-              <ion-card-header>
-                <ion-card-title>Card Title</ion-card-title>
-                <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
+            <ion-card class="table" :style="{ overflow: 'scroll' }">
+              <ion-card-header v-for="item in dormitory" :key="item">
+                <ion-card-title>{{ item.title }}</ion-card-title>
+                <ion-card-subtitle>{{ item.date }}</ion-card-subtitle>
               </ion-card-header>
             </ion-card>
           </ion-col>
@@ -53,6 +53,9 @@
         <ion-fab-list side="top">
           <ion-fab-button color="light">
             <ion-icon :icon="contrast"></ion-icon>
+          </ion-fab-button>
+          <ion-fab-button color="light">
+            <ion-icon :icon="refresh"></ion-icon>
           </ion-fab-button>
         </ion-fab-list>
       </ion-fab>
@@ -78,7 +81,8 @@ import {
   IonFabButton,
   IonFabList,
 } from "@ionic/vue";
-import { cog, settings, contrast } from "ionicons/icons";
+import { cog, settings, contrast, refresh } from "ionicons/icons";
+import axios from "axios";
 export default defineComponent({
   name: "Tab1Page",
   components: {
@@ -98,8 +102,30 @@ export default defineComponent({
     IonFabList,
   },
   setup() {
-    return { cog, settings, contrast };
+    return {
+      //아이콘
+      cog,
+      settings,
+      contrast,
+      refresh,
+    };
   },
-  methods: {},
+  data() {
+    return {
+      scholarship: [],
+      Bachelor: [],
+      dormitory: [],
+    };
+  },
+  async mounted() {
+    const response = await axios.get(
+      "https://api.github.com/repos/asw-dod/dap-macro/issues"
+    );
+    const json = JSON.parse(response.data[0].body);
+    this.Bachelor = json["학사공지"].notice;
+    this.scholarship = json["장학공지"].notice;
+    this.dormitory = json["기숙사공지"].notice;
+    console.log("test");
+  },
 });
 </script>
