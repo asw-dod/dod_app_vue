@@ -1,7 +1,7 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
+  appId: 'com.inmd.dod',
   appName: 'dod_app',
   webDir: 'dist',
   bundledWebRuntime: false

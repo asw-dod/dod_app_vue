@@ -2,7 +2,7 @@
   <ion-page>
     <!--header-->
     <ion-toolbar>
-      <ion-title>D.O.D Dap notice</ion-title>
+      <ion-title>D.O.D Dap announcement</ion-title>
     </ion-toolbar>
     <!--body-->
     <ion-content fullscreen>
@@ -51,10 +51,10 @@
           <ion-icon :icon="settings"></ion-icon>
         </ion-fab-button>
         <ion-fab-list side="top">
-          <ion-fab-button color="light">
-            <ion-icon :icon="contrast"></ion-icon>
+          <ion-fab-button @click="info_button" color="light">
+            <ion-icon :icon="information"></ion-icon>
           </ion-fab-button>
-          <ion-fab-button color="light">
+          <ion-fab-button @click="refresh_button" color="light">
             <ion-icon :icon="refresh"></ion-icon>
           </ion-fab-button>
         </ion-fab-list>
@@ -80,8 +80,17 @@ import {
   IonFab,
   IonFabButton,
   IonFabList,
+  toastController,
+  alertController,
 } from "@ionic/vue";
-import { cog, settings, contrast, refresh } from "ionicons/icons";
+import {
+  cog,
+  settings,
+  contrast,
+  refresh,
+  checkbox,
+  information,
+} from "ionicons/icons";
 import axios from "axios";
 export default defineComponent({
   name: "Tab1Page",
@@ -108,6 +117,8 @@ export default defineComponent({
       settings,
       contrast,
       refresh,
+      checkbox,
+      information,
     };
   },
   data() {
@@ -117,7 +128,44 @@ export default defineComponent({
       dormitory: [],
     };
   },
+  methods: {
+    async info_button() {
+      const alert = await alertController.create({
+        header: "App info",
+        message: "Made: INMD1 버전: 0.0.1",
+        buttons: ["OK"],
+      });
+      await alert.present();
+    },
+    //만약에 파싱이 안될경우 사용자가 직접 파싱 할수 있게 버튼을 추가함
+    async refresh_button() {
+      let message_title = "";
+      let today = new Date();
+      try {
+        const response = await axios.get(
+          "https://api.github.com/repos/asw-dod/dap-macro/issues"
+        );
+        const json = JSON.parse(response.data[0].body);
+        this.Bachelor = json["학사공지"].notice;
+        this.scholarship = json["장학공지"].notice;
+        this.dormitory = json["기숙사공지"].notice;
+        message_title = " 정상적으로 새로고침 되었습니다";
+      } catch (error) {
+        message_title = "오류가 발생 했습니다 관리자한데 문의해주십시오";
+      }
+      //메세지를 보내는 코드
+      const toast = await toastController.create({
+        position: "bottom",
+        icon: checkbox,
+        header: message_title,
+        message: today.toLocaleString(),
+        duration: 1500,
+      });
+      return toast.present();
+    },
+  },
   async mounted() {
+    //처음부터 파싱을 함
     const response = await axios.get(
       "https://api.github.com/repos/asw-dod/dap-macro/issues"
     );
