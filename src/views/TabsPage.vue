@@ -26,7 +26,7 @@
     </ion-tabs>
   </ion-page>
 </template>
-<script lang="ts">
+<script >
 import { defineComponent } from 'vue';
 import { IonTabBar, IonTabButton, IonTabs, IonLabel, IonIcon, IonPage, IonRouterOutlet } from '@ionic/vue';
 import { home, albums, clipboard, globe } from 'ionicons/icons';
