@@ -2,42 +2,39 @@
   <ion-page>
     <!--header-->
     <ion-toolbar>
-      <ion-title>D.O.D Dap announcement</ion-title>
+      <ion-title>D.O.D announcement</ion-title>
     </ion-toolbar>
     <!--body-->
     <ion-content fullscreen>
       <ion-row class="row1">
         <ion-grid>
+          <ion-col>
+            <h1 class="note_title">식단공지</h1>
+            <ion-slides>
+              <ion-slide>
+                <ion-col>
+                  <h1 class="food_title">정보관</h1>
+                  <ion-card class="food_table">
+                    <ion-card-header> </ion-card-header>
+                  </ion-card>
+                </ion-col>
+              </ion-slide>
+              <ion-slide>
+                <ion-col>
+                  <h1 class="food_title">수덕전</h1>
+                  <ion-card class="food_table">
+                    <ion-card-header> </ion-card-header>
+                  </ion-card>
+                </ion-col>
+              </ion-slide>
+            </ion-slides>
+          </ion-col>
           <!--학사공지-->
           <ion-col>
             <h1 class="note_title">학사공지</h1>
             <!--for 문으로 리스트 데이터를 가지고 온다.-->
-            <ion-card class="table" :style="{ overflow: 'scroll' }">
+            <ion-card class="table_main" :style="{ overflow: 'scroll' }">
               <ion-card-header v-for="item in Bachelor" :key="item">
-                <ion-card-title>{{ item.title }}</ion-card-title>
-                <ion-card-subtitle>{{ item.date }}</ion-card-subtitle>
-              </ion-card-header>
-            </ion-card>
-          </ion-col>
-          <ion-col>
-            <!--장학공지-->
-            <h1 class="note_title">장학공지</h1>
-            <!--listview-->
-            <!--for 문으로 리스트 데이터를 가지고 온다.-->
-            <ion-card class="table" :style="{ overflow: 'scroll' }">
-              <ion-card-header v-for="item in scholarship" :key="item">
-                <ion-card-title>{{ item.title }}</ion-card-title>
-                <ion-card-subtitle>{{ item.date }}</ion-card-subtitle>
-              </ion-card-header>
-            </ion-card>
-          </ion-col>
-          <ion-col>
-            <!--장학공지-->
-            <h1 class="note_title">기숙사공지</h1>
-            <!--listview-->
-            <!--for 문으로 리스트 데이터를 가지고 온다.-->
-            <ion-card class="table" :style="{ overflow: 'scroll' }">
-              <ion-card-header v-for="item in dormitory" :key="item">
                 <ion-card-title>{{ item.title }}</ion-card-title>
                 <ion-card-subtitle>{{ item.date }}</ion-card-subtitle>
               </ion-card-header>
@@ -76,10 +73,6 @@ import {
   IonCardHeader,
   IonCardSubtitle,
   IonCardTitle,
-  IonIcon,
-  IonFab,
-  IonFabButton,
-  IonFabList,
   toastController,
   alertController,
 } from "@ionic/vue";
@@ -92,6 +85,7 @@ import {
   information,
 } from "ionicons/icons";
 import axios from "axios";
+
 export default defineComponent({
   name: "Tab1Page",
   components: {
@@ -105,10 +99,6 @@ export default defineComponent({
     IonCardHeader,
     IonCardSubtitle,
     IonCardTitle,
-    IonIcon,
-    IonFab,
-    IonFabButton,
-    IonFabList,
   },
   setup() {
     return {
@@ -132,7 +122,7 @@ export default defineComponent({
     async info_button() {
       const alert = await alertController.create({
         header: "App info",
-        message: "Made: INMD1 버전: 0.0.1",
+        message: "Made: INMD1 버전: 0.0.2",
         buttons: ["OK"],
       });
       await alert.present();
@@ -146,9 +136,18 @@ export default defineComponent({
           "https://api.github.com/repos/asw-dod/dap-macro/issues"
         );
         const json = JSON.parse(response.data[0].body);
-        this.Bachelor = json["학사공지"].notice;
-        this.scholarship = json["장학공지"].notice;
-        this.dormitory = json["기숙사공지"].notice;
+        if (response.data[0].title.indexOf("DAP") != -1) {
+          const json = JSON.parse(response.data[0].body);
+          this.Bachelor = json["학사공지"].notice;
+          this.scholarship = json["장학공지"].notice;
+          this.dormitory = json["기숙사공지"].notice;
+        } else {
+          console.log(response.data[1].body);
+          const json = JSON.parse(response.data[1].body);
+          this.Bachelor = json["학사공지"].notice;
+          this.scholarship = json["장학공지"].notice;
+          this.dormitory = json["기숙사공지"].notice;
+        }
         message_title = " 정상적으로 새로고침 되었습니다";
       } catch (error) {
         message_title = "오류가 발생 했습니다 관리자한데 문의해주십시오";
@@ -165,14 +164,22 @@ export default defineComponent({
     },
   },
   async mounted() {
-    //처음부터 파싱을 함
+    //처음부터 파싱을 함;
     const response = await axios.get(
       "https://api.github.com/repos/asw-dod/dap-macro/issues"
     );
-    const json = JSON.parse(response.data[0].body);
-    this.Bachelor = json["학사공지"].notice;
-    this.scholarship = json["장학공지"].notice;
-    this.dormitory = json["기숙사공지"].notice;
+    if (response.data[0].title.indexOf("DAP") != -1) {
+      const json = JSON.parse(response.data[0].body);
+      this.Bachelor = json["학사공지"].notice;
+      this.scholarship = json["장학공지"].notice;
+      this.dormitory = json["기숙사공지"].notice;
+    } else {
+      console.log(response.data[1].body);
+      const json = JSON.parse(response.data[1].body);
+      this.Bachelor = json["학사공지"].notice;
+      this.scholarship = json["장학공지"].notice;
+      this.dormitory = json["기숙사공지"].notice;
+    }
     console.log("test");
   },
 });

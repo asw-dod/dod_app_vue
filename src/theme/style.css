@@ -25,7 +25,26 @@ body {
   height: 300px;
 }
 
+.table_main {
+  height: 450px;
+}
+
 .note_title {
   font-family: jua;
   padding-left: 0.5em;
+}
+
+.food_title {
+  font-family: jua;
+  padding-left: 0.5em;
+  text-align: left;
+}
+
+.food_table {
+  height: 17vh;
+}
+
+ion-slides {
+  height: 20vh;
+  width: 100vw;
 }
