@@ -41,10 +41,12 @@ body {
 }
 
 .food_table {
-  height: 17vh;
+  height: 20vh;
+  overflow: scroll;
+  overflow-x: hidden;
 }
 
 ion-slides {
-  height: 20vh;
+  height: 25vh;
   width: 100vw;
 }

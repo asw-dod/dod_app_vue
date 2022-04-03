@@ -15,7 +15,12 @@
                 <ion-col>
                   <h1 class="food_title">정보관</h1>
                   <ion-card class="food_table">
-                    <ion-card-header> </ion-card-header>
+                    <ion-card-header class="food_title">
+                      <ion-card-title>정보공학관 코너1</ion-card-title>
+                    </ion-card-header>
+                    <ion-card-header class="food_title">
+                      <ion-card-title>정보공학관 코너2</ion-card-title>
+                    </ion-card-header>
                   </ion-card>
                 </ion-col>
               </ion-slide>
@@ -23,7 +28,18 @@
                 <ion-col>
                   <h1 class="food_title">수덕전</h1>
                   <ion-card class="food_table">
-                    <ion-card-header> </ion-card-header>
+                    <ion-card-header class="food_title">
+                      <ion-card-title>수덕전 코너1</ion-card-title>
+                      <ion-card-subtitle>TEST</ion-card-subtitle>
+                    </ion-card-header>
+                    <ion-card-header class="food_title">
+                      <ion-card-title>수덕전 코너2</ion-card-title>
+                      <ion-card-subtitle>TEST</ion-card-subtitle>
+                    </ion-card-header>
+                    <ion-card-header class="food_title">
+                      <ion-card-title>수덕전 코너3</ion-card-title>
+                      <ion-card-subtitle>TEST</ion-card-subtitle>
+                    </ion-card-header>
                   </ion-card>
                 </ion-col>
               </ion-slide>
@@ -73,6 +89,8 @@ import {
   IonCardHeader,
   IonCardSubtitle,
   IonCardTitle,
+  IonFab,
+  IonFabList,
   toastController,
   alertController,
 } from "@ionic/vue";
@@ -99,6 +117,8 @@ export default defineComponent({
     IonCardHeader,
     IonCardSubtitle,
     IonCardTitle,
+    IonFab,
+    IonFabList,
   },
   setup() {
     return {
