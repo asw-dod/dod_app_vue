@@ -1,11 +1,8 @@
 <template>
   <ion-page>
-    <!--body-->
-    <ion-content fullscreen>
-      <!--header-->
-      <ion-toolbar>
-        <ion-title>D.O.D announcement</ion-title>
-      </ion-toolbar>
+    <ion-content fullscreen="true">
+
+      <!--body-->
       <ion-row class="row1">
         <ion-grid>
           <ion-col>
@@ -17,16 +14,16 @@
                   <ion-card class="food_table">
                     <ion-card-header class="food_title">
                       <ion-card-title>정보공학관 코너1</ion-card-title>
-                      <ion-card-title>{{
-                        this.inforamtion["cor1"]
-                      }}</ion-card-title>
                     </ion-card-header>
+                    <ion-card-content class="food_title">{{
+                      this.inforamtion["cor1"]
+                    }}</ion-card-content>
                     <ion-card-header class="food_title">
-                      <ion-card-title>정보공학관 코너2</ion-card-title>
-                      <ion-card-title>{{
-                        this.inforamtion["cor3"]
-                      }}</ion-card-title>
+                      <ion-card-title>정보공학관 코너3</ion-card-title>
                     </ion-card-header>
+                    <ion-card-content class="food_title">{{
+                      this.inforamtion["cor3"]
+                    }}</ion-card-content>
                   </ion-card>
                 </ion-col>
               </ion-slide>
@@ -36,15 +33,12 @@
                   <ion-card class="food_table">
                     <ion-card-header class="food_title">
                       <ion-card-title>수덕전 코너1</ion-card-title>
-                      <ion-card-subtitle>TEST</ion-card-subtitle>
                     </ion-card-header>
                     <ion-card-header class="food_title">
                       <ion-card-title>수덕전 코너2</ion-card-title>
-                      <ion-card-subtitle>TEST</ion-card-subtitle>
                     </ion-card-header>
                     <ion-card-header class="food_title">
                       <ion-card-title>수덕전 코너3</ion-card-title>
-                      <ion-card-subtitle>TEST</ion-card-subtitle>
                     </ion-card-header>
                   </ion-card>
                 </ion-col>
@@ -99,7 +93,10 @@ import {
   IonFabList,
   toastController,
   alertController,
-  IonicSlides
+  IonSlide,
+  IonSlides,
+  IonCardContent,
+  IonFabButton
 } from "@ionic/vue";
 import {
   cog,
@@ -127,7 +124,10 @@ export default defineComponent({
     IonCardTitle,
     IonFab,
     IonFabList,
-    IonicSlides
+    IonFabButton,
+    IonSlide,
+    IonSlides,
+    IonCardContent,
   },
   setup() {
     return {

@@ -1,6 +1,0 @@
-{
-	"appId": "com.inmd.dod",
-	"appName": "dod_app",
-	"webDir": "dist",
-	"bundledWebRuntime": false
-}
