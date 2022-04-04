@@ -1,11 +1,11 @@
 <template>
   <ion-page>
-    <!--header-->
-    <ion-toolbar>
-      <ion-title>D.O.D announcement</ion-title>
-    </ion-toolbar>
     <!--body-->
     <ion-content fullscreen>
+      <!--header-->
+      <ion-toolbar>
+        <ion-title>D.O.D announcement</ion-title>
+      </ion-toolbar>
       <ion-row class="row1">
         <ion-grid>
           <ion-col>
@@ -17,9 +17,15 @@
                   <ion-card class="food_table">
                     <ion-card-header class="food_title">
                       <ion-card-title>정보공학관 코너1</ion-card-title>
+                      <ion-card-title>{{
+                        this.inforamtion["cor1"]
+                      }}</ion-card-title>
                     </ion-card-header>
                     <ion-card-header class="food_title">
                       <ion-card-title>정보공학관 코너2</ion-card-title>
+                      <ion-card-title>{{
+                        this.inforamtion["cor3"]
+                      }}</ion-card-title>
                     </ion-card-header>
                   </ion-card>
                 </ion-col>
@@ -103,6 +109,7 @@ import {
   information,
 } from "ionicons/icons";
 import axios from "axios";
+import dayjs from "dayjs";
 
 export default defineComponent({
   name: "Tab1Page",
@@ -136,6 +143,8 @@ export default defineComponent({
       scholarship: [],
       Bachelor: [],
       dormitory: [],
+      inforamtion: [],
+      suduck: [],
     };
   },
   methods: {
@@ -159,14 +168,10 @@ export default defineComponent({
         if (response.data[0].title.indexOf("DAP") != -1) {
           const json = JSON.parse(response.data[0].body);
           this.Bachelor = json["학사공지"].notice;
-          this.scholarship = json["장학공지"].notice;
-          this.dormitory = json["기숙사공지"].notice;
         } else {
           console.log(response.data[1].body);
           const json = JSON.parse(response.data[1].body);
           this.Bachelor = json["학사공지"].notice;
-          this.scholarship = json["장학공지"].notice;
-          this.dormitory = json["기숙사공지"].notice;
         }
         message_title = " 정상적으로 새로고침 되었습니다";
       } catch (error) {
@@ -185,22 +190,87 @@ export default defineComponent({
   },
   async mounted() {
     //처음부터 파싱을 함;
-    const response = await axios.get(
+    let response = "";
+    response = await axios.get(
       "https://api.github.com/repos/asw-dod/dap-macro/issues"
     );
     if (response.data[0].title.indexOf("DAP") != -1) {
       const json = JSON.parse(response.data[0].body);
       this.Bachelor = json["학사공지"].notice;
-      this.scholarship = json["장학공지"].notice;
-      this.dormitory = json["기숙사공지"].notice;
     } else {
       console.log(response.data[1].body);
       const json = JSON.parse(response.data[1].body);
       this.Bachelor = json["학사공지"].notice;
-      this.scholarship = json["장학공지"].notice;
-      this.dormitory = json["기숙사공지"].notice;
     }
-    console.log("test");
+
+    response = await axios.get(
+      "https://raw.githubusercontent.com/asw-dod/Deu_food_api/master/output/api.json"
+    );
+    async function getfood(typei, data) {
+      const time = dayjs().format("YYYY-MM-DD");
+      //행복기숙사용
+      if (typei == "happy") {
+        try {
+          for (let index = 0; index < 7; index++) {
+            if (data["happy"][index].Date == time) {
+              return data["happy"][index];
+            }
+          }
+        } catch (error) {
+          return {
+            breakfast: "없거나 Api서버 오류 발생",
+            lunch: "없거나 Api서버 오류 발생",
+            lunch_s: "없거나 Api서버 오류 발생",
+            dinner: "없거나 Api서버 오류 발생",
+            dinner_s: "없거나 Api서버 오류 발생",
+          };
+        }
+        //효민기숙사용
+      } else if (typei == "hyomin") {
+        try {
+          for (let index = 0; index < 7; index++) {
+            if (data["hyomin"][index].Date == time) {
+              return data["hyomin"][index];
+            }
+          }
+        } catch (error) {
+          return {
+            breakfast: "없거나 Api서버 오류 발생",
+            lunch: "없거나 Api서버 오류 발생",
+            lunch_s: "없거나 Api서버 오류 발생",
+            dinner: "없거나 Api서버 오류 발생",
+            dinner_s: "없거나 Api서버 오류 발생",
+          };
+        }
+      } else if (typei == "inforamtion") {
+        try {
+          return {
+            cor1: data["inforamtion"]["정보공학관 코너1"][0]["menuName"],
+            cor3: data["inforamtion"]["정보공학관 코너3"][0]["menuName"],
+          };
+        } catch (error) {
+          return {
+            cor1: "없습",
+            cor3: "없습",
+          };
+        }
+      } else if (typei == "suduck") {
+        try {
+          return {
+            cor2: data["suduck"]["수덕전 코너2"][0]["menuName"],
+            cor3: data["suduck"]["수덕전 코너3"][0]["menuName"],
+          };
+        } catch (error) {
+          return {
+            cor2: "없습",
+            cor3: "없습",
+          };
+        }
+      }
+    }
+
+    this.inforamtion = await getfood("inforamtion", response.data);
+    this.suduck = await getfood("suduck", response.data);
   },
 });
 </script>
