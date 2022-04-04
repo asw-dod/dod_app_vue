@@ -99,6 +99,7 @@ import {
   IonFabList,
   toastController,
   alertController,
+  IonicSlides
 } from "@ionic/vue";
 import {
   cog,
@@ -126,6 +127,7 @@ export default defineComponent({
     IonCardTitle,
     IonFab,
     IonFabList,
+    IonicSlides
   },
   setup() {
     return {
